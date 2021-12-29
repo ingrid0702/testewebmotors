@@ -1,0 +1,10 @@
+default: -p chrome -p html -p json -p pretty
+firefox: BROWSER=firefox
+chrome: BROWSER=chrome
+headless: BROWSER=headless
+html: --format html --out=data/report.html
+json: --format json --out=data/report.json
+pretty: --format pretty
+progress: --format progress
+execfirefox: -p firefox -p html -p json -p pretty
+exec: -p headless -p html -p json -p pretty

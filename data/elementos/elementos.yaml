@@ -1,0 +1,9 @@
+acessar_aplicacao: "https://www.webmotors.com.br/"
+Menu_compra_carro: ".Menu li"
+link_carro_novo_usado: "#navigationUsedOrNewCars"
+bloco_carro_lista: ".sc-hMFtBS"
+preco_carro: ".vehicleSendProposalPrice"
+combustivel: "#VehiclePrincipalInformationFuel"
+marca: "#VehicleBasicInformationTitle"
+troca_carros: "#VehicleCharacteristicPos1"
+
