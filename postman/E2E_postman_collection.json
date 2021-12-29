@@ -1,0 +1,414 @@
+{
+	"info": {
+		"_postman_id": "6c7f5dff-f431-4675-a6b5-488e25b7bf09",
+		"name": "E2E",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "fazer login",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"TOKEN\", pm.response.text().replace(/\\\"/g, ''));",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"roni_cost@example.com\",\n    \"password\": \"roni_cost3@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://magento.nublue.co.uk/rest/default/V1/integration/customer/token",
+							"protocol": "https",
+							"host": [
+								"magento",
+								"nublue",
+								"co",
+								"uk"
+							],
+							"path": [
+								"rest",
+								"default",
+								"V1",
+								"integration",
+								"customer",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Adicionar produtos ao carrinho",
+			"item": [
+				{
+					"name": "Criar Quote",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+									"});",
+									"",
+									"pm.environment.set(\"QUOTE_ID\", pm.response.text());",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://magento.nublue.co.uk/rest/default/V1/carts/mine",
+							"protocol": "https",
+							"host": [
+								"magento",
+								"nublue",
+								"co",
+								"uk"
+							],
+							"path": [
+								"rest",
+								"default",
+								"V1",
+								"carts",
+								"mine"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar Produto ao carrinho",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Successful POST request\", function () {",
+									"    pm.expect(pm.response.code).to.be.oneOf([200,201,202]);",
+									"});",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cartItem\": {\n    \"sku\": \"24-WB05\",\n    \"qty\": 1,\n    \"quote_id\": {{QUOTE_ID}}\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://magento.nublue.co.uk/rest/default/V1/carts/mine/items",
+							"protocol": "https",
+							"host": [
+								"magento",
+								"nublue",
+								"co",
+								"uk"
+							],
+							"path": [
+								"rest",
+								"default",
+								"V1",
+								"carts",
+								"mine",
+								"items"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Estimar Frete",
+			"item": [
+				{
+					"name": "Estimar frete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"address\": {\n    \"region\": \"New York\",\n    \"region_id\": 43,\n    \"region_code\": \"NY\",\n    \"country_id\": \"US\",\n    \"street\": [\n      \"123 Oak Ave\"\n    ],\n    \"postcode\": \"10577\",\n    \"city\": \"Purchase\",\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\",\n    \"customer_id\": 4,\n    \"email\": \"jdoe@example.com\",\n    \"telephone\": \"(512) 555-1111\",\n    \"same_as_billing\": 1\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://magento.nublue.co.uk/rest/default/V1/carts/mine/estimate-shipping-methods",
+							"protocol": "https",
+							"host": [
+								"magento",
+								"nublue",
+								"co",
+								"uk"
+							],
+							"path": [
+								"rest",
+								"default",
+								"V1",
+								"carts",
+								"mine",
+								"estimate-shipping-methods"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Preencher dados de endereço",
+			"item": [
+				{
+					"name": "Informações de entrega",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"addressInformation\": {\n    \"shipping_address\": {\n      \"region\": \"New York\",\n      \"region_id\": 43,\n      \"region_code\": \"NY\",\n      \"country_id\": \"US\",\n      \"street\": [\n        \"123 Oak Ave\"\n      ],\n      \"postcode\": \"10577\",\n      \"city\": \"Purchase\",\n      \"firstname\": \"Jane\",\n      \"lastname\": \"Doe\",\n      \"email\": \"jdoe@example.com\",\n      \"telephone\": \"512-555-1111\"\n    },\n    \"billing_address\": {\n      \"region\": \"New York\",\n      \"region_id\": 43,\n      \"region_code\": \"NY\",\n      \"country_id\": \"US\",\n      \"street\": [\n        \"123 Oak Ave\"\n      ],\n      \"postcode\": \"10577\",\n      \"city\": \"Purchase\",\n      \"firstname\": \"Jane\",\n      \"lastname\": \"Doe\",\n      \"email\": \"jdoe@example.com\",\n      \"telephone\": \"512-555-1111\"\n    },\n    \"shipping_carrier_code\": \"tablerate\",\n    \"shipping_method_code\": \"bestway\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://magento.nublue.co.uk/rest/default/V1/carts/mine/shipping-information",
+							"protocol": "https",
+							"host": [
+								"magento",
+								"nublue",
+								"co",
+								"uk"
+							],
+							"path": [
+								"rest",
+								"default",
+								"V1",
+								"carts",
+								"mine",
+								"shipping-information"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Forma de pagamento",
+			"item": [
+				{
+					"name": "Informações de pagamento",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"paymentMethod\": {\n    \"method\": \"checkmo\"\n  },\n  \"billing_address\": {\n    \"email\": \"jdoe@example.com\",\n    \"region\": \"New York\",\n    \"region_id\": 43,\n    \"region_code\": \"NY\",\n    \"country_id\": \"US\",\n    \"street\": [\n      \"123 Oak Ave\"\n    ],\n    \"postcode\": \"10577\",\n    \"city\": \"Purchase\",\n    \"telephone\": \"512-555-1111\",\n    \"firstname\": \"Jane\",\n    \"lastname\": \"Doe\"\n  }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://magento.nublue.co.uk/rest/default/V1/carts/mine/payment-information",
+							"protocol": "https",
+							"host": [
+								"magento",
+								"nublue",
+								"co",
+								"uk"
+							],
+							"path": [
+								"rest",
+								"default",
+								"V1",
+								"carts",
+								"mine",
+								"payment-information"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
